@@ -57,6 +57,8 @@ public class Arrays extends PApplet {
 
 		println(map1(26, 25, 35, 0, 100));
 		// 10
+
+		println(avg);
 	}
 
 	public void setup() {
