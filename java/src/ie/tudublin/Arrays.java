@@ -148,6 +148,28 @@ public class Arrays extends PApplet {
 				}
 				break;
 			case 3:
+				// Calculate the sum of all rainfall data
+				float sum = 0;
+				for (float r : rainfall) {
+					sum += r;
+				}
+
+				// Draw pie chart segments
+				float startAngle = 0;
+				for (int i = 0; i < months.length; i++) {
+					float angle = map(rainfall[i], 0, sum, 0, TWO_PI); // Calculate angle for the segment
+					float hue = map(i, 0, months.length, 0, 255); // Set hue based on position
+					fill(hue, 255, 255); // Set fill color using HSB color space
+					arc(width / 2, height / 2, 300, 300, startAngle, startAngle + angle); // Draw arc segment
+					startAngle += angle; // Update start angle for the next segment
+
+					// Calculate position for label
+					float labelX = width / 2 + cos(startAngle - angle / 2) * 175;
+					float labelY = height / 2 + sin(startAngle - angle / 2) * 175;
+					textAlign(CENTER, CENTER);
+					fill(255); // Set text color to white
+					text(months[i], labelX, labelY); // Draw label
+				}
 				break;
 			default:
 				showError("Invalid input! Please try again.");
