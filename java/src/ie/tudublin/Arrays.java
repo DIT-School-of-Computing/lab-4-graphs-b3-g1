@@ -220,5 +220,4 @@ public class Arrays extends PApplet {
 			mode = key - '0';
 		}
 	}
-
 }
