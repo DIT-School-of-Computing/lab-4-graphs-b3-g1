@@ -7,7 +7,7 @@ public class Arrays extends PApplet {
 	boolean showError = false;
 	int errorMessageTimer = 0;
 	String errorMessage = "";
-	int mode = 0;
+	int mode = 1;
 
 	String[] months = { "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC" };
 	float[] rainfall = { 200, 260, 300, 150, 100, 50, 10, 40, 67, 160, 400, 420 };
@@ -67,18 +67,19 @@ public class Arrays extends PApplet {
 
 	public void draw() {
 		background(0);
+		textSize(15);
+		int ticks = 13;
+		float border = 0.1f * width;
+		float barWidth = (width - 2 * border) / months.length; // Calculate the width of each bar
+
 		switch (mode) {
-			case 0:
+			case 1:
 				// Start by drawing the axis, then draw the ticks and print the text
 				// Then draw the bars
 				// Then print the text for the months
-				int ticks = 13;
-				float border = 0.1f * width;
 				stroke(255);
 				line(border, border, border, height - border);
 				line(border, height - border, width - border, height - border);
-
-				float barWidth = (width - 2 * border) / months.length; // Calculate the width of each bar
 
 				for (int i = 0; i < ticks; i++) {
 					float y = map1(i, 0, ticks - 1, height - border, border); // Mapping y-values from bottom to top
@@ -107,9 +108,44 @@ public class Arrays extends PApplet {
 					text(months[i], x, height - border + 20);
 				}
 				break;
-			case 1:
-				break;
 			case 2:
+				// Start by drawing the axis, then draw the ticks and print the text
+				stroke(255);
+				line(border, border, border, height - border);
+				line(border, height - border, width - border, height - border);
+
+				for (int i = 0; i < ticks; i++) {
+					float y = map1(i, 0, ticks - 1, height - border, border);
+					line(border, y, border - 10, y);
+					textAlign(RIGHT, CENTER);
+					fill(255);
+					text(i * 10, border - 15, y);
+				}
+
+				// Draw trend lines
+				colorMode(HSB);
+				noFill();
+				beginShape();
+				for (int i = 1; i < months.length; i++) {
+					float x1 = border + (i - 1) * barWidth; // Calculate x-coordinate for the start of line segment
+					float y1 = map(rainfall[i - 1], 0, 500, height - border, border); // Map previous rainfall to
+																						// y-coordinate
+					float x2 = border + i * barWidth; // Calculate x-coordinate for the end of line segment
+					float y2 = map(rainfall[i], 0, 500, height - border, border); // Map current rainfall to
+																					// y-coordinate
+					float hue = map(i, 0, months.length - 1, 0, 255); // Set hue based on position
+					stroke(hue, 255, 255); // Set line color using HSB color space
+					line(x1, y1, x2, y2); // Draw line segment
+				}
+				endShape();
+
+				// Draw month labels
+				textAlign(CENTER, CENTER);
+				fill(255); // Set text color to white
+				for (int i = 0; i < months.length; i++) {
+					float x = border + i * barWidth; // Calculate x-coordinate for label
+					text(months[i], x, height - border + 20);
+				}
 				break;
 			case 3:
 				break;
