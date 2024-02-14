@@ -213,8 +213,10 @@ public class Arrays extends PApplet {
 	}
 
 	public void keyPressed() {
-
-		if (key >= '0' && key <= '9') {
+		// Check if the 'r' key is pressed
+		if (key == 'r' || key == 'R') {
+			randomize(); // Randomize the rainfall data
+		} else if (key >= '0' && key <= '9') {
 			mode = key - '0';
 		}
 	}
